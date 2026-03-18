@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "nodenext",
+    "resolvePackageJsonExports": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2022",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": true,
+    "strictBindCallApply": true,
+    "noFallthroughCasesInSwitch": true,
+      "paths": {
+      "@auth/*": ["src/auth/*"],
+      "@wallet/*": ["src/wallet/*"],
+      "@fx/*": ["src/fx/*"],
+      "@transactions/*": ["src/transactions/*"],
+      "@users/*": ["src/users/*"],
+      "@common/*": ["src/common/*"],
+      "@redis/*": ["src/redis/*"],
+      "@mail/*": ["src/mail/*"],
+      "@admin/*": ["src/admin/*"]
+    }
+  }
+}
