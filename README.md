@@ -53,7 +53,7 @@
 
 ### 1. Clone and install
 ```bash
-git clone https://github.com/YOUR_USERNAME/credfx-api.git
+git clone https://github.com/charle123455/credfx-api.git
 cd credfx-api
 npm install
 ```
@@ -63,30 +63,11 @@ npm install
 cp .env.example .env
 ```
 
-Open `.env` and fill in all values. Key ones:
-```env
-DB_HOST=localhost
-DB_PORT=5432
-DB_USERNAME=postgres
-DB_PASSWORD=your_db_password
-DB_NAME=credfx
+Open `.env` and fill in all values. 
 
-JWT_SECRET=change_this_to_a_long_random_string_in_production
-
-REDIS_HOST=localhost
-REDIS_PORT=6379
-
-MAIL_HOST=sandbox.smtp.mailtrap.io
-MAIL_PORT=2525
-MAIL_USER=your_mailtrap_user
-MAIL_PASS=your_mailtrap_pass
-
-FX_API_KEY=your_exchangerate_api_key
-```
 
 ### 3. Create the database
-```bash
-psql -U postgres -c "CREATE DATABASE credfx;"
+
 ```
 
 ### 4. Run the application
