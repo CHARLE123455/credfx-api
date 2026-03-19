@@ -8,9 +8,12 @@ import { FxModule } from '@fx/fx.module';
 import { Transaction } from '@transactions/entities/transaction.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Wallet, WalletBalance, Transaction]), FxModule],
-    providers: [WalletService],
-    controllers: [WalletController],
-    exports: [WalletService],
+  imports: [
+    TypeOrmModule.forFeature([Wallet, WalletBalance, Transaction]),
+    FxModule,
+  ],
+  providers: [WalletService],
+  controllers: [WalletController],
+  exports: [WalletService],
 })
-export class WalletModule { }
+export class WalletModule {}

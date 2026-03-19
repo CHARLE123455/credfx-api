@@ -5,5 +5,16 @@
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "^@auth/(.*)$": "<rootDir>/../src/auth/$1",
+    "^@wallet/(.*)$": "<rootDir>/../src/wallet/$1",
+    "^@fx/(.*)$": "<rootDir>/../src/fx/$1",
+    "^@transactions/(.*)$": "<rootDir>/../src/transactions/$1",
+    "^@users/(.*)$": "<rootDir>/../src/users/$1",
+    "^@common/(.*)$": "<rootDir>/../src/common/$1",
+    "^@redis/(.*)$": "<rootDir>/../src/redis/$1",
+    "^@mail/(.*)$": "<rootDir>/../src/mail/$1",
+    "^@admin/(.*)$": "<rootDir>/../src/admin/$1"
   }
 }

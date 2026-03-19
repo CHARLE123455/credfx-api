@@ -11,76 +11,82 @@ import { QueryTransactionsDto } from '@transactions/dto/query-transactions.dto';
 
 @Injectable()
 export class AdminService {
-    constructor(
-        private readonly usersService: UsersService,
-        private readonly transactionsService: TransactionsService,
-        @InjectRepository(FxRateSnapshot)
-        private readonly snapshotRepository: Repository<FxRateSnapshot>,
-        @InjectRepository(Transaction)
-        private readonly transactionRepository: Repository<Transaction>,
-        @InjectRepository(User)
-        private readonly userRepository: Repository<User>,
-    ) { }
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly transactionsService: TransactionsService,
+    @InjectRepository(FxRateSnapshot)
+    private readonly snapshotRepository: Repository<FxRateSnapshot>,
+    @InjectRepository(Transaction)
+    private readonly transactionRepository: Repository<Transaction>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {}
 
-    async getAllUsers(page = 1, limit = 20) {
-        return this.usersService.findAll(page, limit);
-    }
+  async getAllUsers(page = 1, limit = 20) {
+    return this.usersService.findAll(page, limit);
+  }
 
-    async getUserById(id: string): Promise<User> {
-        return this.usersService.findById(id);
-    }
+  async getUserById(id: string): Promise<User> {
+    return this.usersService.findById(id);
+  }
 
-    async updateUserRole(id: string, role: Role): Promise<{ message: string }> {
-        await this.usersService.update(id, { role });
-        return { message: `User role updated to ${role}` };
-    }
+  async updateUserRole(id: string, role: Role): Promise<{ message: string }> {
+    await this.usersService.update(id, { role });
+    return { message: `User role updated to ${role}` };
+  }
 
-    async getAllTransactions(query: QueryTransactionsDto) {
-        return this.transactionsService.getAllTransactions(query);
-    }
+  async getAllTransactions(query: QueryTransactionsDto) {
+    return this.transactionsService.getAllTransactions(query);
+  }
 
-    async getAnalyticsSummary() {
-        const totalUsers = await this.userRepository.count();
-        const verifiedUsers = await this.userRepository.count({ where: { isVerified: true } });
+  async getAnalyticsSummary() {
+    const totalUsers = await this.userRepository.count();
+    const verifiedUsers = await this.userRepository.count({
+      where: { isVerified: true },
+    });
 
-        const volumeByType = await this.transactionRepository
-            .createQueryBuilder('tx')
-            .select('tx.type', 'type')
-            .addSelect('COUNT(*)', 'count')
-            .addSelect('SUM(tx.amount)', 'volume')
-            .groupBy('tx.type')
-            .getRawMany();
+    const volumeByType = await this.transactionRepository
+      .createQueryBuilder('tx')
+      .select('tx.type', 'type')
+      .addSelect('COUNT(*)', 'count')
+      .addSelect('SUM(tx.amount)', 'volume')
+      .groupBy('tx.type')
+      .getRawMany();
 
-        const volumeByCurrency = await this.transactionRepository
-            .createQueryBuilder('tx')
-            .select('tx.fromCurrency', 'currency')
-            .addSelect('SUM(tx.amount)', 'volume')
-            .addSelect('COUNT(*)', 'count')
-            .groupBy('tx.fromCurrency')
-            .getRawMany();
+    const volumeByCurrency = await this.transactionRepository
+      .createQueryBuilder('tx')
+      .select('tx.fromCurrency', 'currency')
+      .addSelect('SUM(tx.amount)', 'volume')
+      .addSelect('COUNT(*)', 'count')
+      .groupBy('tx.fromCurrency')
+      .getRawMany();
 
-        const topUsers = await this.transactionRepository
-            .createQueryBuilder('tx')
-            .select('tx.userId', 'userId')
-            .addSelect('COUNT(*)', 'transactionCount')
-            .addSelect('SUM(tx.amount)', 'totalVolume')
-            .groupBy('tx.userId')
-            .orderBy('transactionCount', 'DESC')
-            .limit(10)
-            .getRawMany();
+    const topUsers = await this.transactionRepository
+      .createQueryBuilder('tx')
+      .select('tx.userId', 'userId')
+      .addSelect('COUNT(*)', 'transactionCount')
+      .addSelect('SUM(tx.amount)', 'totalVolume')
+      .groupBy('tx.userId')
+      .orderBy('transactionCount', 'DESC')
+      .limit(10)
+      .getRawMany();
 
-        return {
-            users: { total: totalUsers, verified: verifiedUsers, unverified: totalUsers - verifiedUsers },
-            transactions: { byType: volumeByType, byCurrency: volumeByCurrency },
-            topUsers,
-        };
-    }
+    return {
+      users: {
+        total: totalUsers,
+        verified: verifiedUsers,
+        unverified: totalUsers - verifiedUsers,
+      },
+      transactions: { byType: volumeByType, byCurrency: volumeByCurrency },
+      topUsers,
+    };
+  }
 
-    async getFxTrends(baseCurrency = 'NGN', limit = 20) {
-        return this.snapshotRepository.find({
-            where: { baseCurrency },
-            order: { fetchedAt: 'DESC' },
-            take: limit,
-        });
-    }
+  async getFxTrends(baseCurrency = 'NGN', limit = 20) {
+    return this.snapshotRepository.find({
+      where: { baseCurrency },
+      order: { fetchedAt: 'DESC' },
+      take: limit,
+    });
+  }
 }

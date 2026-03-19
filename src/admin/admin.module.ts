@@ -9,12 +9,12 @@ import { Transaction } from '@transactions/entities/transaction.entity';
 import { User } from '@users/entities/user.entity';
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([FxRateSnapshot, Transaction, User]),
-        UsersModule,
-        TransactionsModule,
-    ],
-    providers: [AdminService],
-    controllers: [AdminController],
+  imports: [
+    TypeOrmModule.forFeature([FxRateSnapshot, Transaction, User]),
+    UsersModule,
+    TransactionsModule,
+  ],
+  providers: [AdminService],
+  controllers: [AdminController],
 })
-export class AdminModule { }
+export class AdminModule {}

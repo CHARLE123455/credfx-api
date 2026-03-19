@@ -5,9 +5,9 @@ import { FxController } from './fx.controller';
 import { FxRateSnapshot } from './entities/fx-rate-snapshot.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([FxRateSnapshot])],
-    providers: [FxService],
-    controllers: [FxController],
-    exports: [FxService],
+  imports: [TypeOrmModule.forFeature([FxRateSnapshot])],
+  providers: [FxService],
+  controllers: [FxController],
+  exports: [FxService],
 })
-export class FxModule { }
+export class FxModule {}

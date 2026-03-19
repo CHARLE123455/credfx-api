@@ -20,14 +20,16 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: configService.get<string>('JWT_SECRET'),
+      secretOrKey: configService.getOrThrow<string>('JWT_SECRET'),
     });
   }
 
   async validate(payload: JwtPayload): Promise<User> {
     const user = await this.usersService.findById(payload.sub);
     if (!user || !user.isVerified) {
-      throw new UnauthorizedException('Access denied. Please verify your email.');
+      throw new UnauthorizedException(
+        'Access denied. Please verify your email.',
+      );
     }
     return user;
   }

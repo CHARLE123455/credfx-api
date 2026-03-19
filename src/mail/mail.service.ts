@@ -5,36 +5,38 @@ import { Transporter } from 'nodemailer';
 
 @Injectable()
 export class MailService {
-    private readonly logger = new Logger(MailService.name);
-    private transporter: Transporter;
+  private readonly logger = new Logger(MailService.name);
+  private transporter: Transporter;
 
-    constructor(private readonly configService: ConfigService) {
-        this.transporter = nodemailer.createTransport({
-            host: this.configService.get<string>('MAIL_HOST'),
-            port: this.configService.get<number>('MAIL_PORT'),
-            auth: {
-                user: this.configService.get<string>('MAIL_USER'),
-                pass: this.configService.get<string>('MAIL_PASS'),
-            },
-        });
+  constructor(private readonly configService: ConfigService) {
+    this.transporter = nodemailer.createTransport({
+      host: this.configService.get<string>('MAIL_HOST'),
+      port: this.configService.get<number>('MAIL_PORT'),
+      auth: {
+        user: this.configService.get<string>('MAIL_USER'),
+        pass: this.configService.get<string>('MAIL_PASS'),
+      },
+    });
+  }
+
+  async sendOtp(to: string, firstName: string, otp: string): Promise<void> {
+    try {
+      await this.transporter.sendMail({
+        from: this.configService.get<string>('MAIL_FROM'),
+        to,
+        subject: 'CredFX — Verify Your Email Address',
+        html: this.buildOtpTemplate(firstName, otp),
+      });
+      this.logger.log(`OTP email sent to ${to}`);
+    } catch (error) {
+      this.logger.error(
+        `Failed to send OTP email to ${to}: ${(error as Error).message}`,
+      );
     }
+  }
 
-    async sendOtp(to: string, firstName: string, otp: string): Promise<void> {
-        try {
-            await this.transporter.sendMail({
-                from: this.configService.get<string>('MAIL_FROM'),
-                to,
-                subject: 'CredFX — Verify Your Email Address',
-                html: this.buildOtpTemplate(firstName, otp),
-            });
-            this.logger.log(`OTP email sent to ${to}`);
-        } catch (error) {
-            this.logger.error(`Failed to send OTP email to ${to}: ${(error as Error).message}`);
-        }
-    }
-
-    private buildOtpTemplate(firstName: string, otp: string): string {
-        return `
+  private buildOtpTemplate(firstName: string, otp: string): string {
+    return `
       <!DOCTYPE html>
       <html>
         <head><meta charset="utf-8"></head>
@@ -60,5 +62,5 @@ export class MailService {
         </body>
       </html>
     `;
-    }
+  }
 }

@@ -11,17 +11,26 @@ import { User } from '@users/entities/user.entity';
 @UseGuards(JwtAuthGuard)
 @Controller('transactions')
 export class TransactionsController {
-    constructor(private readonly transactionsService: TransactionsService) { }
+  constructor(private readonly transactionsService: TransactionsService) {}
 
-    @Get()
-    @ApiOperation({ summary: 'View paginated transaction history with filters' })
-    getUserTransactions(@CurrentUser() user: User, @Query() query: QueryTransactionsDto) {
-        return this.transactionsService.getUserTransactions(user.id, query);
-    }
+  @Get()
+  @ApiOperation({ summary: 'View paginated transaction history with filters' })
+  getUserTransactions(
+    @CurrentUser() user: User,
+    @Query() query: QueryTransactionsDto,
+  ) {
+    return this.transactionsService.getUserTransactions(user.id, query);
+  }
 
-    @Get(':reference')
-    @ApiOperation({ summary: 'Get a single transaction by reference' })
-    getTransaction(@CurrentUser() user: User, @Param('reference') reference: string) {
-        return this.transactionsService.getTransactionByReference(user.id, reference);
-    }
+  @Get(':reference')
+  @ApiOperation({ summary: 'Get a single transaction by reference' })
+  getTransaction(
+    @CurrentUser() user: User,
+    @Param('reference') reference: string,
+  ) {
+    return this.transactionsService.getTransactionByReference(
+      user.id,
+      reference,
+    );
+  }
 }

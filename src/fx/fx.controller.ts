@@ -9,17 +9,19 @@ import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
 @UseGuards(JwtAuthGuard)
 @Controller('fx')
 export class FxController {
-    constructor(private readonly fxService: FxService) { }
+  constructor(private readonly fxService: FxService) {}
 
-    @Get('rates')
-    @ApiOperation({ summary: 'Get real-time FX rates for supported currency pairs' })
-    getRates(@Query() dto: GetRatesDto) {
-        return this.fxService.getRates(dto.base);
-    }
+  @Get('rates')
+  @ApiOperation({
+    summary: 'Get real-time FX rates for supported currency pairs',
+  })
+  getRates(@Query() dto: GetRatesDto) {
+    return this.fxService.getRates(dto.base);
+  }
 
-    @Get('pairs')
-    @ApiOperation({ summary: 'Get all supported trading pairs' })
-    getPairs() {
-        return this.fxService.getSupportedPairs();
-    }
+  @Get('pairs')
+  @ApiOperation({ summary: 'Get all supported trading pairs' })
+  getPairs() {
+    return this.fxService.getSupportedPairs();
+  }
 }
