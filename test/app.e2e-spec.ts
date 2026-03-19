@@ -14,7 +14,7 @@ describe('CredFX API (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-n the 
+
     app.setGlobalPrefix('api/v1');
     app.useGlobalPipes(
       new ValidationPipe({
