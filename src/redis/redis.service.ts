@@ -1,8 +1,8 @@
 import {
   Injectable,
+  Logger,
   OnModuleDestroy,
   OnModuleInit,
-  Logger,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Redis from 'ioredis';

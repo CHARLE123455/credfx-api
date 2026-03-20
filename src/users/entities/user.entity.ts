@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
+import { Transaction } from '@transactions/entities/transaction.entity';
+import { Wallet } from '@wallet/entities/wallet.entity';
+import * as bcrypt from 'bcryptjs';
 import {
-  Entity,
-  PrimaryGeneratedColumn,
+  BeforeInsert,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
-  OneToOne,
+  Entity,
   OneToMany,
-  BeforeInsert,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
-import * as bcrypt from 'bcryptjs';
 import { Role } from '../enums/role.enum';
-import { Wallet } from '@wallet/entities/wallet.entity';
-import { Transaction } from '@transactions/entities/transaction.entity';
 
 @Entity('users')
 export class User {
@@ -50,7 +50,7 @@ export class User {
   wallet!: Wallet;
 
   @OneToMany(() => Transaction, (transaction) => transaction.user)
-  transactions: Transaction[] = [];
+  transactions!: Transaction[];
 
   @CreateDateColumn()
   createdAt!: Date;
