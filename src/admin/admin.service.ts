@@ -65,11 +65,25 @@ export class AdminService {
       .createQueryBuilder('tx')
       .select('tx.userId', 'userId')
       .addSelect('COUNT(*)', 'transactionCount')
-      .addSelect('SUM(tx.amount)', 'totalVolume')
+      .addSelect('COALESCE(SUM(tx.amount), 0)', 'totalVolume')
+      .leftJoin('tx.user', 'user')
+      .addSelect('user.email', 'email')
+      .addSelect('user.firstName', 'firstName')
+      .addSelect('user.lastName', 'lastName')
       .groupBy('tx.userId')
-      .orderBy('transactionCount', 'DESC')
+      .addGroupBy('user.email')
+      .addGroupBy('user.firstName')
+      .addGroupBy('user.lastName')
+      .orderBy('COUNT(*)', 'DESC')
       .limit(10)
-      .getRawMany();
+      .getRawMany<{
+        userId: string;
+        transactionCount: string;
+        totalVolume: string;
+        email: string;
+        firstName: string;
+        lastName: string;
+      }>();
 
     return {
       users: {

@@ -72,6 +72,24 @@ export class TransactionsService {
     const qb = this.transactionRepository
       .createQueryBuilder('tx')
       .leftJoinAndSelect('tx.user', 'user')
+      .select([
+        'tx.id',
+        'tx.reference',
+        'tx.type',
+        'tx.fromCurrency',
+        'tx.toCurrency',
+        'tx.amount',
+        'tx.convertedAmount',
+        'tx.rateUsed',
+        'tx.feePercent',
+        'tx.feeAmount',
+        'tx.status',
+        'tx.createdAt',
+        'user.id',
+        'user.email',
+        'user.firstName',
+        'user.lastName',
+      ])
       .orderBy('tx.createdAt', 'DESC')
       .skip((page - 1) * limit)
       .take(limit);
