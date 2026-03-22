@@ -1,5 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNumber, IsPositive, IsOptional, IsIn } from 'class-validator';
+import {
+  IsNumber,
+  IsPositive,
+  IsOptional,
+  IsIn,
+  IsString,
+} from 'class-validator';
 import { SUPPORTED_CURRENCIES } from '@common/constants/currencies';
 
 export class FundWalletDto {
@@ -23,5 +29,6 @@ export class FundWalletDto {
     description: 'Idempotency key to prevent duplicate funding',
   })
   @IsOptional()
+  @IsString()
   idempotencyKey?: string;
 }

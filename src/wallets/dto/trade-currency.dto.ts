@@ -4,6 +4,7 @@ import {
   IsIn,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsPositive,
   IsString,
 } from 'class-validator';
@@ -30,5 +31,7 @@ export class TradeCurrencyDto {
   targetAmount!: number;
 
   @ApiProperty({ description: 'Idempotency key', required: false })
+  @IsOptional()
+  @IsString()
   idempotencyKey?: string;
 }
